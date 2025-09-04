@@ -25,32 +25,28 @@ public class Account {
         return money;
     }
 
-    public String deposit(BigInteger quantity){
+    public void deposit(BigInteger quantity){
         if(quantity.compareTo(BigInteger.ZERO) <= 0){
-            return "quantity must be positive";
-        }else{
-            money = money.add(quantity);
-            return "success";
+            throw new ValidationException("quantity must be positive");
         }
+        money = money.add(quantity);
     }
-    public String withdraw(BigInteger quantity){
+    public void withdraw(BigInteger quantity){
         if (quantity == null) {
-            return "quantity cannot be null";
+            throw new ValidationException("quantity cannot be null");
         }
         if (quantity.compareTo(BigInteger.ZERO) <= 0) {
-            return "quantity must be positive";
+            throw new ValidationException( "quantity must be positive");
         }
         if(money.compareTo(quantity) < 0){
-            return "not enough money";
+            throw new ValidationException( "not enough money");
         }
         money = money.subtract(quantity);
-        return "success";
     }
 
     public String getCardNumber() {
         return cardNumber;
     }
-
     public void setCardNumber(String cardNumber) {
         this.cardNumber = cardNumber;
     }
