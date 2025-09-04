@@ -2,23 +2,20 @@ package org.example;
 
 
 import java.math.BigInteger;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Main {
+    private static int option;
+    private static Scanner scan = new Scanner(System.in);
+
+
     public static void main(String[] args) {
-        Scanner scan = new Scanner(System.in);
         BankService service = new BankApplicationService(new InMemoryAccountRepository());
 
-        System.out.println("Welcome to Bank Service \n");
-        System.out.println("Please chooise an option: ");
-        System.out.println("1. Create Account");
-        System.out.println("2 - Deposit");
-        System.out.println("3 - Get account info");
-        System.out.println("4 - Transfer");
-        System.out.println("5 - Withdraw");
-        System.out.println("6 - Exit");
-        int option = scan.nextInt();
 
+        System.out.println("Welcome to Bank Service \n");
+        getMenuOption();
         do {
             switch (option) {
                 case 1:
@@ -26,8 +23,13 @@ public class Main {
                     String accountNumber = scan.next();
                     System.out.println("Enter account name: ");
                     String accountName = scan.next();
-                    service.createAccount(accountNumber, accountName);
+                    try {
 
+                        service.createAccount(accountNumber, accountName);
+                        System.out.println("Account created successfully");
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
                     break;
                 case 2:
                     System.out.println("Enter account name: ");
@@ -36,6 +38,7 @@ public class Main {
                     BigInteger quantity = new BigInteger(scan.next());
                     try {
                         service.deposit(accountNam, quantity);
+                        System.out.println("Deposited successfully");
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                     }
@@ -44,7 +47,8 @@ public class Main {
                 case 3:
                     System.out.println("Enter account name: ");
                     String accountNme = scan.next();
-                    service.getAccountInfo(accountNme);
+                    Account retrievedAccount = service.getAccountInfo(accountNme);
+                    printAccount(retrievedAccount);
                     break;
 
                 case 4:
@@ -56,6 +60,7 @@ public class Main {
                     BigInteger quantity2 = new BigInteger(scan.next());
                     try {
                         service.transferToAccount(account, targetAccount, quantity2);
+                        System.out.println("Transfer successfully");
                     }catch (Exception e) {
                         System.out.println(e.getMessage());
                     }
@@ -69,6 +74,7 @@ public class Main {
                     BigInteger quantity3 = new BigInteger(scan.next());
                     try {
                         service.withdraw(nameAccount, quantity3);
+                        System.out.println("Withdraw successfully");
                     }catch (Exception e) {
                         System.out.println(e.getMessage());
                     }
@@ -76,9 +82,38 @@ public class Main {
                 default:
                     System.out.println("Option Not Found");
             }
+            getMenuOption();
         }while (option != 6);
+    }
 
+    private static void printAccount(Account account) {
+        printSeparator();
+        printAccountField("name", account.getName());
+        System.out.println();
+        printAccountField("card number", account.getCardNumber());
+        System.out.println();
+        printAccountField("balance", account.getMoney());
+        System.out.println();
+        printSeparator();
+    }
 
+    private static void printSeparator(){
+        System.out.println("----------------------------");
+    }
 
+    private static void printAccountField(String fieldName, Object fieldValue){
+        System.out.printf("\t%s\t\t\t", fieldName);
+        System.out.print(fieldValue);
+    }
+
+    public static void getMenuOption(){
+        System.out.println("Please chooise an option: ");
+        System.out.println("1. Create Account");
+        System.out.println("2 - Deposit");
+        System.out.println("3 - Get account info");
+        System.out.println("4 - Transfer");
+        System.out.println("5 - Withdraw");
+        System.out.println("6 - Exit");
+        option = scan.nextInt();
     }
 }
