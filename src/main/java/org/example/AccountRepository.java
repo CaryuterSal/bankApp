@@ -1,7 +1,9 @@
 package org.example;
 
+import java.util.Optional;
+
 public interface AccountRepository {
     Account save(Account account);
     void delete(Account account);
-    int findByCardNumber(String )
+    Optional<Account> findByCardNumber(String cardNumber);
 }

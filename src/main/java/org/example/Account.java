@@ -7,7 +7,7 @@ public class Account {
     private BigInteger money;
     private String cardNumber;
 
-    public Account(String name, BigInteger money, String cardNumber, int nip) {
+    public Account(String name, BigInteger money, String cardNumber) {
         this.name = name;
         this.money = money;
         this.cardNumber = cardNumber;
