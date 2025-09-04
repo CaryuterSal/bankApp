@@ -1,11 +1,13 @@
 package org.example;
 
+import java.math.BigInteger;
+
 public class Account {
     private String name;
-    private String money;
+    private BigInteger money;
     private String cardNumber;
 
-    public Account(String name, String money, String cardNumber, int nip) {
+    public Account(String name, BigInteger money, String cardNumber, int nip) {
         this.name = name;
         this.money = money;
         this.cardNumber = cardNumber;
@@ -19,12 +21,30 @@ public class Account {
         this.name = name;
     }
 
-    public String getMoney() {
+    public BigInteger getMoney() {
         return money;
     }
 
-    public void setMoney(String money) {
-
+    public String deposit(BigInteger quantity){
+        if(quantity.compareTo(BigInteger.ZERO) <= 0){
+            return "quantity must be positive";
+        }else{
+            money = money.add(quantity);
+            return "success";
+        }
+    }
+    public String withdraw(BigInteger quantity){
+        if (quantity == null) {
+            return "quantity cannot be null";
+        }
+        if (quantity.compareTo(BigInteger.ZERO) <= 0) {
+            return "quantity must be positive";
+        }
+        if(money.compareTo(quantity) < 0){
+            return "not enough money";
+        }
+        money = money.subtract(quantity);
+        return "success";
     }
 
     public String getCardNumber() {
